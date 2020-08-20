@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyText
+  lat: 
+  long: 
+  point: 
+
+two:
+  name: MyText
+  lat: 
+  long: 
+  point: 

@@ -1,0 +1,70 @@
+<p id="notice"><%= notice %></p>
+<head>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<h1>Positives</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Lat</th>
+      <th>Long</th>
+      <th>Point</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @positives.each do |positive| %>
+      <tr>
+        <td><%= positive.name %></td>
+        <td><%= positive.lat %></td>
+        <td><%= positive.long %></td>
+        <td><%= positive.lonlat %></td>
+        <td><%= link_to 'Show', positive %></td>
+        <td><%= link_to 'Edit', edit_positive_path(positive) %></td>
+        <td><%= link_to 'Destroy', positive, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+<%= link_to 'New Positive', new_positive_path %>
+<%=@positives_json%>
+<br>
+<%=@json%>
+<br>
+
+<div id="map" style="height: 500px">
+
+</div>
+<script>
+
+    var map = L.map('map').setView([-27.33, -55.87], 13);
+    var greenIcon = L.icon ({
+       iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png',
+        shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/images/marker-shadow.png',
+        iconSize: [25, 41],
+        iconAnchor: [12, 41],
+        popupAnchor: [1, -34],
+        shadowSize: [41, 41]
+    });
+
+
+
+
+    $.getJSON("positives.json", function(data) {
+        L.geoJson(data, { pointToLayer: function (feature,latLng) {
+                return L.marker(latLng,{icon: greenIcon})
+            }}).addTo(map);
+    });
+
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
+
+
+</script>

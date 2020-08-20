@@ -1,0 +1,40 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @positive.name %>
+</p>
+
+<p>
+  <strong>Lat:</strong>
+  <%= @positive.lat %>
+</p>
+
+<p>
+  <strong>Long:</strong>
+  <%= @positive.long %>
+</p>
+
+<p>
+  <strong>Point:</strong>
+  <%= @positive.lonlat %>
+</p>
+
+<%= link_to 'Edit', edit_positive_path(@positive) %> |
+<%= link_to 'Back', positives_path %>
+
+
+<div id="map" style="height: 500px">
+  x
+  x
+</div>
+<script>
+var map = L.map('map').setView([-27.33, -55.87], 13);
+
+var marker = L.marker([<%= @longlat.y%>,<%= @longlat.x%>]).addTo(map);
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+}).addTo(map);
+
+
+</script>
