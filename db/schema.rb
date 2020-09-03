@@ -10,11 +10,40 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_08_14_150921) do
+ActiveRecord::Schema.define(version: 2020_09_03_011507) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "postgis"
+
+  create_table "barrios", force: :cascade do |t|
+    t.string "nombre"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "cuidads", force: :cascade do |t|
+    t.string "nombre"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "distrito_cuidad_barrios", force: :cascade do |t|
+    t.bigint "distrito_id"
+    t.bigint "cuidad_id"
+    t.bigint "barrio_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["barrio_id"], name: "index_distrito_cuidad_barrios_on_barrio_id"
+    t.index ["cuidad_id"], name: "index_distrito_cuidad_barrios_on_cuidad_id"
+    t.index ["distrito_id"], name: "index_distrito_cuidad_barrios_on_distrito_id"
+  end
+
+  create_table "distritos", force: :cascade do |t|
+    t.string "nombre"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "positives", force: :cascade do |t|
     t.text "name"
@@ -25,4 +54,28 @@ ActiveRecord::Schema.define(version: 2020_08_14_150921) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "positivos", force: :cascade do |t|
+    t.string "nombre"
+    t.string "apellido"
+    t.integer "edad"
+    t.string "sexo"
+    t.string "arbo"
+    t.string "serotipo"
+    t.bigint "barrio_id"
+    t.bigint "cuidad_id"
+    t.bigint "distrito_id"
+    t.point "lonlat"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["barrio_id"], name: "index_positivos_on_barrio_id"
+    t.index ["cuidad_id"], name: "index_positivos_on_cuidad_id"
+    t.index ["distrito_id"], name: "index_positivos_on_distrito_id"
+  end
+
+  add_foreign_key "distrito_cuidad_barrios", "barrios"
+  add_foreign_key "distrito_cuidad_barrios", "cuidads"
+  add_foreign_key "distrito_cuidad_barrios", "distritos"
+  add_foreign_key "positivos", "barrios"
+  add_foreign_key "positivos", "cuidads"
+  add_foreign_key "positivos", "distritos"
 end

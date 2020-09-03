@@ -1,0 +1,31 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Distrito Cuidad Barrios</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Distrito</th>
+      <th>Cuidad</th>
+      <th>Barrio</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @distrito_cuidad_barrios.each do |distrito_cuidad_barrio| %>
+      <tr>
+        <td><%= distrito_cuidad_barrio.distrito.id %></td>
+        <td><%= distrito_cuidad_barrio.cuidad.id %></td>
+        <td><%= distrito_cuidad_barrio.barrio.id %></td>
+        <td><%= link_to 'Show', distrito_cuidad_barrio %></td>
+        <td><%= link_to 'Edit', edit_distrito_cuidad_barrio_path(distrito_cuidad_barrio) %></td>
+        <td><%= link_to 'Destroy', distrito_cuidad_barrio, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Distrito Cuidad Barrio', new_distrito_cuidad_barrio_path %>

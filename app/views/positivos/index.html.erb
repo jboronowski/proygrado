@@ -1,0 +1,50 @@
+
+
+ <div class="col-lg-12">
+                                <div class="main-card mb-6 card">
+                                    <div class="card-body"><h5 class="card-title">Casos Positivos</h5>
+
+<table class="mb-0 table table-bordered" id="dttb">
+  <thead>
+   <tr>
+      <th>Nombre</th>
+      <th>Apellido</th>
+      <th>Edad</th>
+       <th>Sexo</th>
+      <th>Arbo</th>
+      <th>Serotipo</th>
+       <th>Barrio</th>
+      <th>Cuidad</th>
+      <th>Distrito</th>
+      <th>Ver en mapa</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @positivos.each do |positivo| %>
+      <tr>
+        <td><%= positivo.nombre %></td>
+        <td><%= positivo.apellido %></td>
+        <td><%= positivo.edad %></td>
+        <td><%= positivo.sexo %></td>
+        <td><%= positivo.arbo %></td>
+        <td><%= positivo.serotipo %></td>
+        <td><%= positivo.barrio.nombre %></td>
+        <td><%= positivo.cuidad.nombre%></td>
+        <td><%= positivo.distrito.nombre %></td>
+        <td><%= link_to positivo do %>
+ 
+   <span>Ver en Mapa</span>
+    <i class="pe-7s-map-marker icon-gradient bg-premium-dark"></i>
+<% end %>        </td>
+ 
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+
+</div>
+
+</div></div>
+

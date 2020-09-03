@@ -1,27 +1,51 @@
 <p id="notice"><%= notice %></p>
-
+ 
 <p>
-  <strong>Name:</strong>
-  <%= @positive.name %>
+  <strong>Nombre:</strong>
+  <%= @positivo.nombre %>
 </p>
 
 <p>
-  <strong>Lat:</strong>
-  <%= @positive.lat %>
+  <strong>Apellido:</strong>
+  <%= @positivo.apellido %>
 </p>
 
 <p>
-  <strong>Long:</strong>
-  <%= @positive.long %>
+  <strong>Edad:</strong>
+  <%= @positive.edad %>
 </p>
 
 <p>
-  <strong>Point:</strong>
-  <%= @positive.lonlat %>
+  <strong>Sexo:</strong>
+  <%= @positivo.sexo %>
+</p>
+<p>
+  <strong>Arbo:</strong>
+  <%= @positivo.arbo %>
 </p>
 
-<%= link_to 'Edit', edit_positive_path(@positive) %> |
-<%= link_to 'Back', positives_path %>
+<p>
+  <strong>Serotipo:</strong>
+  <%= @positivo.serotipo %>
+</p>
+
+<p>
+  <strong>Barrio:</strong>
+  <%= @positivo.barrio %>
+</p>
+<p>
+  <strong>Cuidad:</strong>
+  <%= @positivo.cuidad %>
+</p>
+
+<p>
+  <strong>Distrito:</strong>
+  <%= @positivo.distrito %>
+</p>
+
+
+<%= link_to 'Edit', edit_positivo_path(@positivo) %> |
+<%= link_to 'Back', positivos_path %>
 
 
 <div id="map" style="height: 500px">

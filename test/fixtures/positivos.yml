@@ -1,0 +1,25 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  nombre: MyString
+  apellido: MyString
+  edad: 1
+  sexo: MyString
+  arbo: MyString
+  serotipo: MyString
+  barrio: one
+  cuidad: one
+  distrito: one
+  lonlat: 
+
+two:
+  nombre: MyString
+  apellido: MyString
+  edad: 1
+  sexo: MyString
+  arbo: MyString
+  serotipo: MyString
+  barrio: two
+  cuidad: two
+  distrito: two
+  lonlat: 

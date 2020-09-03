@@ -1,0 +1,2 @@
+module DistritoCuidadBarriosHelper
+end

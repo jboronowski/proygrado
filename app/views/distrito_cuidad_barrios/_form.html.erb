@@ -1,0 +1,32 @@
+<%= form_with(model: distrito_cuidad_barrio, local: true) do |form| %>
+  <% if distrito_cuidad_barrio.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(distrito_cuidad_barrio.errors.count, "error") %> prohibited this distrito_cuidad_barrio from being saved:</h2>
+
+      <ul>
+      <% distrito_cuidad_barrio.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :distrito_id %>
+    <%= form.text_field :distrito_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :cuidad_id %>
+    <%= form.text_field :cuidad_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :barrio_id %>
+    <%= form.text_field :barrio_id %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>
