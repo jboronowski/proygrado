@@ -17,8 +17,13 @@
 </div>
 
 <script>
+    var osm  = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>', maxZoom: 17, minZoom: 6});
 
-    var map = L.map('map').setView([-27.33, -55.87], 12);
+    var map = L.map('map',{
+        center: [-27.33, -55.87],
+        zoom:  12,
+        layers: [osm]
+    });
     var greenIcon = L.icon ({
        iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-green.png',
         shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/images/marker-shadow.png',
@@ -44,39 +49,49 @@
         shadowSize: [41, 41]
     }); 
 
-var data = $.getJSON( "positivos.json", function( json ) {
-    var dengue;
-    var zika;
-    var chik;
 
-    var data= json.forEach(function (element, index) {
-    if(element['arbo'] === 'Dengue'){
-        L.geoJson(element, { pointToLayer: function (feature,latLng) {
+    var data = $.getJSON( "positivos.json", function( json ) {
+    var dengueL= L.geoJSON(null, { pointToLayer: function (feature,latLng) {
                 return L.marker(latLng,{icon: redIcon})
-            }}).addTo(map);   
-    }
-    if(element['arbo'] === 'Zika'){
-         L.geoJson(element, { pointToLayer: function (feature,latLng) {
+            }}).addTo(map);
+    var zikaL= L.geoJSON(null, { pointToLayer: function (feature,latLng) {
                 return L.marker(latLng,{icon: greenIcon})
             }}).addTo(map);
-    }
-    if(element['arbo'] === 'Chikungunya'){
-        L.geoJson(element, { pointToLayer: function (feature,latLng) {
+    var chikungunyaL = L.geoJSON(null, { pointToLayer: function (feature,latLng) {
                 return L.marker(latLng,{icon: yellowIcon})
             }}).addTo(map);
+    var data= json.forEach(function (element, index) {
+    if(element['arbo'] === 'Dengue'){
+       dengueL.addData(element);   
+    }
+    if(element['arbo'] === 'Zika'){
+         zikaL.addData(element);   
+    }
+    if(element['arbo'] === 'Chikungunya'){
+        chikungunyaL.addData(element);
     }
 });
     
-     
+    var arbol = L.layerGroup([dengueL,zikaL,chikungunyaL]); 
+    var overlayMaps = {
+    "Dengue": dengueL,
+    "Zika": zikaL,
+    "Chikungunya": chikungunyaL
+};
+ var baseOverlay = {
+    "OSM Standar": osm
     
-     
+};
+
+     L.control.layers(baseOverlay,overlayMaps).addTo(map);
   
  });
+     
+    
+
 
   
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-    }).addTo(map);
+    
 
 
 </script>
