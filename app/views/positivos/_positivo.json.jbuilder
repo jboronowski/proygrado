@@ -1,12 +1,12 @@
 
 json.arbo positivo.arbo
-x = positivo.lonlat['x']
-y = positivo.lonlat['y']
-features= []
 
 json.type "FeatureCollection"
 json.features
   json.type "Feature"
+  json.properties do
+	json.time positivo.created_at
+end
   json.geometry do
   json.type "Point"
   json.coordinates [positivo.lonlat['x'],positivo.lonlat['y']]
