@@ -62,6 +62,7 @@ ActiveRecord::Schema.define(version: 2020_09_03_011507) do
     t.string "arbo"
     t.string "serotipo"
     t.date "fecha"
+    t.boolean "estado"
     t.bigint "barrio_id"
     t.bigint "cuidad_id"
     t.bigint "distrito_id"

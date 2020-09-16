@@ -24,6 +24,7 @@ Positivo.populate 100 do |u|
   u.apellido = Faker::Name.last_name
   u.edad =Faker::Number.between(from: 1, to: 50)
   u.sexo = Faker::Gender.short_binary_type
+  u.estado = Faker::Boolean.boolean
   u.arbo =['Dengue','Chikungunya','Zika'].sample
           u.serotipo =['Chik','Den1','ZIKV'].sample
             u.barrio_id =Faker::Number.between(from: 1, to: 3)

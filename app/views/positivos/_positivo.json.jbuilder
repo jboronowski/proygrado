@@ -6,6 +6,16 @@ json.features
   json.properties do
 	json.time positivo.fecha
 	json.arbo positivo.arbo
+	json.serotipo positivo.serotipo
+	json.estado positivo.estado
+	json.nombre positivo.nombre
+	json.apellido positivo.apellido
+	json.edad positivo.edad
+	json.sexo positivo.sexo
+	json.barrio positivo.barrio.nombre
+	json.distrito positivo.distrito.nombre
+	json.cuidad positivo.cuidad.nombre
+
 
 	end
   json.geometry do

@@ -8,6 +8,7 @@ class CreatePositivos < ActiveRecord::Migration[5.2]
       t.string :arbo
       t.string :serotipo
       t.date :fecha
+      t.boolean :estado
       t.references :barrio, foreign_key: true
       t.references :cuidad, foreign_key: true
       t.references :distrito, foreign_key: true

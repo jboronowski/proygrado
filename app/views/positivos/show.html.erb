@@ -142,7 +142,7 @@ function determineColor(arbo) {
 }
 var temp = determineColor("<%= @positivo.arbo%>");
 
-var marker = L.marker([<%= @lonlat.y%>,<%= @lonlat.x%>], {icon: icon}).addTo(map).bindPopup("Arbo: <%= @positivo.arbo%> Edad: <%= @positivo.edad%> Sexo: <%= @positivo.sexo%> <br> Barrio: <%= @positivo.barrio.nombre%> Distrito: <%= @positivo.distrito.nombre%>"
+var marker = L.marker([<%= @lonlat.y%>,<%= @lonlat.x%>], {icon: icon}).addTo(map).bindPopup("Arbo: <%= @positivo.arbo%> Edad: <%= @positivo.edad%> Sexo: <%= @positivo.sexo%> <br> Fecha: <%= @positivo.fecha%> Estado: <%= @positivo.estado%>  <br> Barrio: <%= @positivo.barrio.nombre%> Distrito: <%= @positivo.distrito.nombre%>"
 
 
 
