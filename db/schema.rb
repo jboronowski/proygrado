@@ -61,10 +61,11 @@ ActiveRecord::Schema.define(version: 2020_09_03_011507) do
     t.string "sexo"
     t.string "arbo"
     t.string "serotipo"
+    t.date "fecha"
     t.bigint "barrio_id"
     t.bigint "cuidad_id"
     t.bigint "distrito_id"
-    t.point "lonlat"
+    t.geometry "lonlat", limit: {:srid=>0, :type=>"st_point"}
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["barrio_id"], name: "index_positivos_on_barrio_id"

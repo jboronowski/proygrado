@@ -27,11 +27,16 @@ gem 'leaflet-rails'
 
 # Gema para geojson rails
 #
+gem "rgeo"
 gem 'rgeo-geojson'
 # Gema postgres-postgis
 gem 'activerecord-postgis-adapter'
 #Data tables https://github.com/mkhairi/jquery-datatables
 gem 'jquery-datatables'
+
+#Generador de codigo aleatorio en base de datos
+gem 'faker'
+gem 'populator'
 # Use Redis adapter to run Action Cable in production
 # gem 'redis', '~> 4.0'
 # Use ActiveModel has_secure_password

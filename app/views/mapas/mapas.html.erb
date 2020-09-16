@@ -81,12 +81,12 @@ L.Control.SliderControl = L.Control.extend({
             var valA = null;
             var valB = null;
 
-            if(a.features && a.features.properties && a.feature.properties[options.timeAttribute]){
+            if(a.feature.properties[options.timeAttribute]){
                 valA = a.feature.properties[options.timeAttribute];
             }else if(a.options[options.timeAttribute]){
                 valA = a.options[options.timeAttribute];
             }
-            if(b.features && b.features.properties && b.feature.properties[options.timeAttribute]){
+            if(b.feature.properties[options.timeAttribute]){
                 valB = b.feature.properties[options.timeAttribute];
             }else if(b.options[options.timeAttribute]){
                 valB = b.options[options.timeAttribute];
@@ -365,7 +365,7 @@ L.control.sliderControl = function (options) {
 </script>
 <script>
    
-    var osm  = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>', maxZoom: 17, minZoom: 6});
+    var osm  = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'});
 
     var map = L.map('map',{
         center: [-27.33, -55.87],
@@ -414,15 +414,15 @@ L.control.sliderControl = function (options) {
             }});
       var  testlayer= L.geoJSON(json,{ pointToLayer: function (feature,latLng) {
     
-             if(feature['arbo'] === 'Dengue'){
+             if(feature['properties']['arbo'] === 'Dengue'){
              dengueL.addData(feature);
              return L.marker(latLng,{icon: redIcon});
             }
-              if(feature['arbo'] === 'Zika'){
+              if(feature['properties']['arbo'] === 'Zika'){
              zikaL.addData(feature);
              return L.marker(latLng,{icon: greenIcon});
             }
-              if(feature['arbo'] === 'Chikungunya'){
+              if(feature['properties']['arbo'] === 'Chikungunya'){
                chikungunyaL.addData(feature);
              return L.marker(latLng,{icon: yellowIcon});
             }
@@ -508,14 +508,14 @@ var toggletiempo = L.easyButton({
       map.removeLayer(chikungunyaL);
     
       var  testlayer1= L.geoJSON(json,{ pointToLayer: function (feature,latLng) {
-    
-             if(feature['arbo'] === 'Dengue' && toggledengue.state()==='remove-dengue'){
+             if(feature['properties']['arbo'] === 'Dengue' && toggledengue.state()==='remove-dengue'){
              return L.marker(latLng,{icon: redIcon});
             }
-              if(feature['arbo'] === 'Zika'&& togglezika.state()==='remove-zika'){
+              if(feature['properties']['arbo'] === 'Zika'&& togglezika.state()==='remove-zika'){
              return L.marker(latLng,{icon: greenIcon});
             }
-              if(feature['arbo'] === 'Chikungunya'&& togglechikugunya.state()==='remove-chikugunya'){
+              if(feature['properties']['arbo'] === 'Chikungunya'&& togglechikugunya.state()==='remove-chikugunya'){
+
              return L.marker(latLng,{icon: yellowIcon});
             }
 
@@ -525,8 +525,9 @@ var toggletiempo = L.easyButton({
     sliderControl = L.control.sliderControl({
         position: "topright",
         layer: testlayer1,
-            showAllOnStart: true,
-            range: true
+            range: true,
+            timeStrLength:  19,
+            alwaysShowDate: true,
         });
 
       map.addControl(sliderControl);
