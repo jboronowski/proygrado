@@ -91,6 +91,45 @@ var data = $.getJSON( "positivos.json", function( json ) {
     });
 
 
+
+var customPopup = "Mapa de Arbovirus: <br>"+
+"Para seleccionar un arbovirus utiliza el icono <i class='fa fa-map-marker' aria-hidden='true'></i><br>"+
+"Para buscar por rango de fecha utiliza el icono <i class='fa fa-calendar' aria-hidden='true'></i> y selecciona el rango de fecha  <br>"+
+"El boton de slider <i class='fa fa-sliders' aria-hidden='true'></i> funciona para ver el orden de aparicion en un rango de tiempo <br>"        
+
+    
+var helpPopup = L.popup().setContent(customPopup);
+    var togglehelp= L.easyButton({
+      states: [{
+      stateName: 'add-help',
+      icon: 'fa fa-question-circle-o',
+      title: "Ayuda",
+      onClick: function(control) {
+        toggledengue.disable();
+        togglezika.disable();
+        togglechikugunya.disable();
+        toggletiempo.disable();
+        togglerango.disable();    
+        helpPopup.setLatLng(map.getCenter()).openOn(map);
+        control.state('remove-help'); 
+      }},{
+      icon: 'fa-undo',
+      stateName: 'remove-help',
+      title: 'Sacar ayuda',
+      onClick: function(control) {
+        helpPopup.remove();
+        togglerango.enable();
+        toggletiempo.enable();
+        togglezika.enable();
+        togglechikugunya.enable();
+        toggledengue.enable();
+        control.state('add-help'); 
+      }}]});
+
+
+
+
+
     var toggledengue = L.easyButton({
       states: [{
       stateName: 'add-dengue',
@@ -157,7 +196,7 @@ var data = $.getJSON( "positivos.json", function( json ) {
     var toggletiempo = L.easyButton({
       states: [{
       stateName: 'add-tiempo',
-      icon: 'fa-calendar-alt',
+      icon: 'fa fa-sliders',
       title: 'Añadir Slider tiempo',
       onClick: function(control) {
          if(document.getElementById("slider-timestamp") !== null){
@@ -233,7 +272,7 @@ var data = $.getJSON( "positivos.json", function( json ) {
     var togglerango = L.easyButton({
       states: [{
       stateName: 'add-rango',
-      icon: 'fa-map-marker text-danger',
+      icon: 'fa-calendar',
       title: 'Añadir rango de fecha',
       onClick: function(control) {
 
@@ -305,7 +344,7 @@ var data = $.getJSON( "positivos.json", function( json ) {
         control.state('remove-rango');
       }
       }, {
-      icon: 'fa-undo text-danger',
+      icon: 'fa-undo',
       stateName: 'remove-rango',
       title: 'Sacar Rango de fecha',
       onClick: function(control) {
@@ -340,12 +379,12 @@ var data = $.getJSON( "positivos.json", function( json ) {
 
 
 
-        togglerango.addTo(map);    
+        togglehelp.addTo(map);  
         toggledengue.addTo(map);
         togglezika.addTo(map);
         togglechikugunya.addTo(map);
         toggletiempo.addTo(map);
-
+        togglerango.addTo(map);    
         var baseOverlay = {
         "OSM Standar": osm
 
