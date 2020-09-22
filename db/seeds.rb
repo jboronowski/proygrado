@@ -34,3 +34,18 @@ Positivo.populate 100 do |u|
         
            u.fecha = Faker::Time.between(from: 20.days.ago, to: Time.now)    
   end
+Positivo.populate 100 do |u|
+  u.nombre = Faker::Name.first_name
+  u.apellido = Faker::Name.last_name
+  u.edad =Faker::Number.between(from: 1, to: 50)
+  u.sexo = Faker::Gender.short_binary_type
+  u.estado = Faker::Boolean.boolean
+  u.arbo =['Dengue','Chikungunya','Zika'].sample
+          u.serotipo =['Chik','Den1','ZIKV'].sample
+            u.barrio_id =Faker::Number.between(from: 1, to: 3)
+            u.distrito_id =Faker::Number.between(from: 1, to: 3)
+            u.cuidad_id =Faker::Number.between(from: 1, to: 3)
+            u.lonlat = my_factory.point(Faker::Number.between(from: -55.862131118774414, to: -55.87577819824219),Faker::Number.between(from: -27.32282243746613, to: -27.360333521009597)) 
+        
+           u.fecha = Faker::Time.between(from: 10.days.from_now , to: 20.days.from_now)    
+  end

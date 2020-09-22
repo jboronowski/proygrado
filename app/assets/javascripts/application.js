@@ -15,5 +15,6 @@
 //= require custom
 
 //= require leaflet
+//= require SliderControl
 //= require_tree .
 
