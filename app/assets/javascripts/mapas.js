@@ -1,3 +1,20 @@
+var globallayer;
+var globalcontrol;
+var globaltemp;
+
+function get(layer){
+    return layer;
+}
+
+var timeDimensionControlOptions = {
+        timeSliderDragUpdate: true,
+        loopButton: false,
+        autoPlay: false,
+        playerOptions: {
+            transitionTime: 1000,
+            loop: true
+        }};
+
 
 var greenIcon = L.icon ({
   iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-green.png',
@@ -95,7 +112,8 @@ var data = $.getJSON( "positivos.json", function( json ) {
 var customPopup = "Mapa de Arbovirus: <br>"+
 "Para seleccionar un arbovirus utiliza el icono <i class='fa fa-map-marker' aria-hidden='true'></i><br>"+
 "Para buscar por rango de fecha utiliza el icono <i class='fa fa-calendar' aria-hidden='true'></i> y selecciona el rango de fecha  <br>"+
-"El boton de slider <i class='fa fa-sliders' aria-hidden='true'></i> funciona para ver el orden de aparicion en un rango de tiempo <br>"        
+"El boton de Play <i class='fa fa-play' aria-hidden='true'></i> funciona para ver el orden de aparicion en un rango de tiempo <br>"+
+"Para la funcionalidad de rango de tiempo, primeramente debe seleccionar un rango"       
 
     
 var helpPopup = L.popup().setContent(customPopup);
@@ -180,85 +198,37 @@ var helpPopup = L.popup().setContent(customPopup);
         map.removeLayer(chikungunyaL);
         control.state('add-chikungunya');
       }}]});
-    var sliderFunc = function(layer){
-            var temp = L.control.sliderControl({position: "topright",
-        layer: layer,
-        range: true,
-        timeStrLength:  19,
-        alwaysShowDate: true,
-        showPopups: false});
-           
-            return temp;
-        }
-  var slider;
-  var slidertiempo;
+   
 
     var toggletiempo = L.easyButton({
       states: [{
       stateName: 'add-tiempo',
-      icon: 'fa fa-sliders',
-      title: 'Añadir Slider tiempo',
+      icon: 'fa fa-play',
+      title: 'Añadir transicion de tiempo',
       onClick: function(control) {
-         if(document.getElementById("slider-timestamp") !== null){
-                map.removeControl(slidertiempo);
-          }
-        map.removeLayer(dengueL);
-        map.removeLayer(zikaL);
-        map.removeLayer(chikungunyaL);
-
-        var  testlayer1= L.geoJSON(json,{ pointToLayer: function (feature,latLng) {
-          if(feature['properties']['arbo'] === 'Dengue' && toggledengue.state()==='remove-dengue'){
-            return L.marker(latLng,{icon: redIcon});
-          }
-          if(feature['properties']['arbo'] === 'Zika'&& togglezika.state()==='remove-zika'){
-            return L.marker(latLng,{icon: greenIcon});
-          }
-          if(feature['properties']['arbo'] === 'Chikungunya'&& togglechikugunya.state()==='remove-chikugunya'){
-            return L.marker(latLng,{icon: yellowIcon});
-          }
-        },
-        onEachFeature: function (feature, layer) {
-          if(feature['properties']['estado'] === false ){
-            layer.options.opacity = 0.7;
-          }
-        layer.bindPopup(
-          "Arbo: "+feature.properties.arbo+" Tipo: "+feature.properties.serotipo+" Edad: "+feature.properties.edad+ " Sexo: "+feature.properties.sexo+"</br>"+
-          " Fecha: "+feature.properties.time+" Estado: "+feature.properties.estado+"<br>"+
-          " Barrio: "+feature.properties.barrio+" Distrito: "+feature.properties.distrito+" Cuidad: "+
-          feature.properties.cuidad
-          );}});   
-
-    
-
-      slidertiempo= sliderFunc(testlayer1);
-      map.addControl(slidertiempo);
-      slidertiempo.startSlider();
-      toggledengue.disable();
-      togglezika.disable();
-      togglechikugunya.disable();
-
+        map.eachLayer(function (layer) { 
+              if(layer.options.id != 'osm'){
+                map.removeLayer(layer);
+            }}); 
+        globaltemp = L.timeDimension.layer.geoJson(globallayer, {updateTimeDimension: true,
+        updateTimeDimensionMode: 'replace',
+        addlastPoint: true});
+        globaltemp.addTo(map);
+        globalcontrol.addTo(map);
 
       control.state('remove-tiempo');
       }
       }, {
       icon: 'fa-undo',
       stateName: 'remove-tiempo',
-      title: 'Sacar Slider Tiempo',
+      title: 'Sacar Transicion de tiempo',
       onClick: function(control) {
-
-        map.removeControl(slidertiempo);
-        toggledengue.enable();
-        togglezika.enable();
-        togglechikugunya.enable();
-      if(toggledengue.state()==='remove-dengue'){
-        map.addLayer(dengueL);
-      }
-      if(togglezika.state()==='remove-zika'){
-        map.addLayer(zikaL);
-      }
-      if(togglechikugunya.state()==='remove-chikugunya'){
-        map.addLayer(chikungunyaL);
-      }
+         map.eachLayer(function (layer) { 
+              if(layer.options.id != 'osm'){
+                map.removeLayer(layer);
+            }});
+        map.removeControl(globalcontrol);
+        map.addLayer(globallayer);
       control.state('add-tiempo');
       }}]});
 
@@ -275,8 +245,7 @@ var helpPopup = L.popup().setContent(customPopup);
       icon: 'fa-calendar',
       title: 'Añadir rango de fecha',
       onClick: function(control) {
-
-        toggletiempo.disable();
+        toggletiempo.enable();
         toggledengue.disable();
         togglezika.disable();
         togglechikugunya.disable();       
@@ -287,11 +256,9 @@ var helpPopup = L.popup().setContent(customPopup);
             $(input).daterangepicker({
             opens: 'left',
             locale: {
-            format: 'YYYY/MM/DD'
+            format: 'DD-MM-YYYY'
             }}, function(start, end, label) {
-            if(document.getElementById("slider-timestamp") !== null){
-                map.removeControl(slider);
-            }
+            
             map.eachLayer(function (layer) { 
               if(layer.options.id != 'osm'){
                 map.removeLayer(layer);
@@ -299,15 +266,18 @@ var helpPopup = L.popup().setContent(customPopup);
 
             var datestart =  start.format('YYYY-MM-DD');
             var dateend = end.format('YYYY-MM-DD');
-
-            var layerdate= L.geoJSON(json,{ pointToLayer: function (feature,latLng) {
-              if(feature['properties']['arbo'] === 'Dengue' && toggledengue.state()==='remove-dengue' && feature['properties']['time'] >  datestart   && feature['properties']['time']<dateend ){
-                return L.marker(latLng,{icon: redIcon});
+            
+            globallayer= L.geoJSON(json,{ pointToLayer: function (feature,latLng) {
+             if(feature['properties']['arbo'] === 'Dengue' && toggledengue.state()==='remove-dengue' && feature['properties']['time'] >=  datestart && feature['properties']['time']<= dateend)  { 
+       
+             return L.marker(latLng,{icon: redIcon});
               }
-              if(feature['properties']['arbo'] === 'Zika'&& togglezika.state()==='remove-zika' && feature['properties']['time'] >  datestart   && feature['properties']['time']<dateend ){
+              if(feature['properties']['arbo'] === 'Zika'&& togglezika.state()==='remove-zika' && feature['properties']['time'] >=  datestart  && feature['properties']['time']<=dateend ){
+              
                 return L.marker(latLng,{icon: greenIcon});
               }
-              if(feature['properties']['arbo'] === 'Chikungunya'&& togglechikugunya.state()==='remove-chikugunya' && feature['properties']['time'] >  datestart   && feature['properties']['time']<dateend ){
+              if(feature['properties']['arbo'] === 'Chikungunya'&& togglechikugunya.state()==='remove-chikugunya' && feature['properties']['time'] >= datestart  && feature['properties']['time']<=dateend ){
+           
                 return L.marker(latLng,{icon: yellowIcon});
               }
               },
@@ -323,11 +293,9 @@ var helpPopup = L.popup().setContent(customPopup);
               );
             }});   
 
-            slider = sliderFunc(layerdate);
-            map.addControl(slider);
-            slider.startSlider();
-            map.addLayer(layerdate);
-
+        globalcontrol =L.control.timeDimension(timeDimensionControlOptions); 
+        map.addLayer(globallayer);
+        
             });
           return input;
           },
@@ -350,8 +318,7 @@ var helpPopup = L.popup().setContent(customPopup);
       onClick: function(control) {
 
         $(input).remove();
-        $(".slider.ui-slider.ui-corner-all.ui-slider-horizontal.ui-widget.ui-widget-content").remove();
-        $("#slider-timestamp").remove();
+       
         map.eachLayer(function (layer) {
           if(layer.options.id != 'osm'){
             map.removeLayer(layer);
@@ -366,8 +333,7 @@ var helpPopup = L.popup().setContent(customPopup);
         if(togglechikugunya.state()==='remove-chikugunya'){
           map.addLayer(chikungunyaL);
         }
-
-        toggletiempo.enable();
+        toggletiempo.disable();
         toggledengue.enable();
         togglezika.enable();
         togglechikugunya.enable();      
@@ -384,6 +350,7 @@ var helpPopup = L.popup().setContent(customPopup);
         togglezika.addTo(map);
         togglechikugunya.addTo(map);
         toggletiempo.addTo(map);
+        toggletiempo.disable();
         togglerango.addTo(map);    
         var baseOverlay = {
         "OSM Standar": osm
