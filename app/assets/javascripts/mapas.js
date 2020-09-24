@@ -1,6 +1,13 @@
+
+
+
+
+
+
 var globallayer;
 var globalcontrol;
 var globaltemp;
+var input;
 
 function get(layer){
     return layer;
@@ -10,31 +17,36 @@ var timeDimensionControlOptions = {
         timeSliderDragUpdate: true,
         loopButton: false,
         autoPlay: false,
+        limitSliders: true,
+        minSpeed: 0.5,
+        maxSpeed: 5,
+        timeZones: ["Local"],
         playerOptions: {
-            transitionTime: 1000,
-            loop: true
+            transitionTime: 2000,
+            loop: false,
+            startOver: true,
         }};
 
 
 var greenIcon = L.icon ({
-  iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-green.png',
-  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/images/marker-shadow.png',
+  iconUrl: "/assets/marker-icon-green.png",
+  shadowUrl: "/assets/marker-shadow.png",
   iconSize: [25, 41],
   iconAnchor: [12, 41],
   popupAnchor: [1, -34],
   shadowSize: [41, 41]
 });
 var redIcon = L.icon ({
-  iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png',
-  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/images/marker-shadow.png',
+  iconUrl: "/assets/marker-icon-red.png",
+  shadowUrl: "/assets/marker-shadow.png",
   iconSize: [25, 41],
   iconAnchor: [12, 41],
   popupAnchor: [1, -34],
   shadowSize: [41, 41]
 });
 var yellowIcon = L.icon ({
-  iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-yellow.png',
-  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/images/marker-shadow.png',
+  iconUrl: "/assets/marker-icon-yellow.png",
+  shadowUrl: "/assets/marker-shadow.png",
   iconSize: [25, 41],
   iconAnchor: [12, 41],
   popupAnchor: [1, -34],
@@ -137,7 +149,6 @@ var helpPopup = L.popup().setContent(customPopup);
       onClick: function(control) {
         helpPopup.remove();
         togglerango.enable();
-        toggletiempo.enable();
         togglezika.enable();
         togglechikugunya.enable();
         toggledengue.enable();
@@ -232,12 +243,11 @@ var helpPopup = L.popup().setContent(customPopup);
       control.state('add-tiempo');
       }}]});
 
-    var input = L.DomUtil.create('input','form-control');
+    
+   
+    input = L.DomUtil.create('input','form-control');
     input.id = 'daterange';        
     input.style.width = '200px';
-    
-
-
 
     var togglerango = L.easyButton({
       states: [{
@@ -248,17 +258,19 @@ var helpPopup = L.popup().setContent(customPopup);
         toggletiempo.enable();
         toggledengue.disable();
         togglezika.disable();
-        togglechikugunya.disable();       
-
-        
+        togglechikugunya.disable(); 
+          
         L.Control.rango = L.Control.extend({
+
           onAdd: function(map) {
             $(input).daterangepicker({
+
             opens: 'left',
+            parentEl: '#datepicker',
             locale: {
             format: 'DD-MM-YYYY'
             }}, function(start, end, label) {
-            
+            console.log("work");
             map.eachLayer(function (layer) { 
               if(layer.options.id != 'osm'){
                 map.removeLayer(layer);
@@ -307,7 +319,7 @@ var helpPopup = L.popup().setContent(customPopup);
         }
 
   
-        map.addControl(  rango({ position: 'topleft' }));
+        map.addControl(rango({ position: 'topleft' }));
       
         control.state('remove-rango');
       }
@@ -318,12 +330,14 @@ var helpPopup = L.popup().setContent(customPopup);
       onClick: function(control) {
 
         $(input).remove();
-       
-        map.eachLayer(function (layer) {
+        
+      map.eachLayer(function (layer) {
           if(layer.options.id != 'osm'){
             map.removeLayer(layer);
           }});
-
+        if((document.getElementsByClassName("leaflet-bar leaflet-bar-horizontal leaflet-bar-timecontrol leaflet-control")).length > 0){
+          console.log("entor");
+        map.removeControl(globalcontrol); }
         if(toggledengue.state()==='remove-dengue'){
           map.addLayer(dengueL);
         }
@@ -336,7 +350,8 @@ var helpPopup = L.popup().setContent(customPopup);
         toggletiempo.disable();
         toggledengue.enable();
         togglezika.enable();
-        togglechikugunya.enable();      
+        togglechikugunya.enable();
+        toggletiempo.state('add-tiempo');    
         control.state('add-rango');
 
         }}]});

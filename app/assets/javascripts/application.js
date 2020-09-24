@@ -16,5 +16,6 @@
 
 //= require leaflet
 //= require SliderControl
+//= require fullscreen
 //= require_tree .
 
