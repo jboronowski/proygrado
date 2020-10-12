@@ -1,3 +1,5 @@
+<%=@json[0]['lonlat'][7..25]%>
+
 <p id="notice"><%= notice %></p>
 <div class="col-lg-12">
                                 <div class="main-card mb-6 card">
@@ -13,60 +15,60 @@
  <div class="row">
  <div class="col-md-2"><p>
   <strong>Nombre:</strong>
-  <%= @positivo.nombre %>
+   <%=@json[0]["nombre"]%>
 </p>
 
   </div>
   <div class="col-md-2">
     <p>
   <strong>Apellido:</strong>
-  <%= @positivo.apellido %>
+ <%= @json[0]["apellido"] %>
 </p>
-
+     
   </div>
   <div class="col-md-2">
     <p>
   <strong>Edad:</strong>
-  <%= @positivo.edad %>
+  <%= @json[0]["edad"] %>
 </p>
   </div>
   <div class="col-md-2">
     <p>
   <strong>Sexo:</strong>
-  <%= @positivo.sexo %>
+  <%= @json[0]["sexo"] %>
 </p>
   </div>
   <div class="col-md-2">
     <p>
   <strong>Arbo:</strong>
-  <%= @positivo.arbo %>
+   <%= @json[0]["arbo_nombre"] %>
 </p>
 
   </div>
   <div class="col-md-2">
     <p>
   <strong>Serotipo:</strong>
-  <%= @positivo.serotipo %>
+  <%= @json[0]["serotipo_nombre"] %>
 </p>
 
   </div>
   <div class="col-md-2">
     <p>
   <strong>Barrio:</strong>
-  <%= @positivo.barrio.nombre %>
+  <%= @json[0]["barrio_nombre"] %>
 </p>
   </div>
 
   <div class="col-md-2">
     <p>
   <strong>Cuidad:</strong>
-  <%= @positivo.cuidad.nombre %>
+    <%= @json[0]["cuidad_nombre"] %>
 </p>
   </div>
   <div class="col-md-2">
     <p>
   <strong>Distrito:</strong>
-  <%= @positivo.distrito.nombre %>
+    <%= @json[0]["distrito_nombre"] %>
 </p>
   </div>
  <div class="col-md-2">
@@ -101,10 +103,8 @@
 
 </div>
 
-
-
 <script>
-var map = L.map('map').setView([<%= @lonlat.y%>,<%= @lonlat.x%>], 13);
+var map = L.map('map').setView([ <%=@json[0]['lonlat'][26..45]%>,<%=@json[0]['lonlat'][7..25]%>], 13);
 
 
 var icon;
@@ -140,9 +140,9 @@ function determineColor(arbo) {
     }); 
   }
 }
-var temp = determineColor("<%= @positivo.arbo%>");
+var temp = determineColor("<%=@arbo%>");
 
-var marker = L.marker([<%= @lonlat.y%>,<%= @lonlat.x%>], {icon: icon}).addTo(map).bindPopup("Arbo: <%= @positivo.arbo%> Edad: <%= @positivo.edad%> Sexo: <%= @positivo.sexo%> <br> Fecha: <%= @positivo.fecha%> Estado: <%= @positivo.estado%>  <br> Barrio: <%= @positivo.barrio.nombre%> Distrito: <%= @positivo.distrito.nombre%>"
+var marker = L.marker([ <%=@json[0]['lonlat'][26..45]%>,<%=@json[0]['lonlat'][7..25]%>], {icon: icon}).addTo(map).bindPopup("Arbo: <%= @json[0]['arbo_nombre']%> Edad: <%= @json[0]['edad']%> Sexo: <%= @json[0]['sexo']%> <br> Fecha: <%= @json[0]['fecha_notificacion']%> Estado: <%= @json[0]['estado']%>  <br> Barrio: <%= @json[0]['barrio_nombre']%> Distrito: <%= @json[0]['distrito_nombre']%>"
 
 
 

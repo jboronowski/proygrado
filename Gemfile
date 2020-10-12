@@ -21,7 +21,7 @@ gem 'coffee-rails', '~> 4.2'
 
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 2.5'
-
+gem 'rack-cors'
 # Gema LEAFLET
 gem 'leaflet-rails'
 
@@ -37,6 +37,9 @@ gem 'jquery-datatables'
 #Generador de codigo aleatorio en base de datos
 gem 'faker'
 gem 'populator'
+#Gema para http request
+gem 'faraday'
+gem 'faraday_middleware'
 # Use Redis adapter to run Action Cable in production
 # gem 'redis', '~> 4.0'
 # Use ActiveModel has_secure_password

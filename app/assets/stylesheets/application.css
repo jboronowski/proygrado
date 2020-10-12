@@ -12,6 +12,7 @@
  *= require leaflet
  *= require_tree .
  *= require datatables
+ *= require custom
  *= require fullscreen
  *= require_self
  */

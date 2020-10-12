@@ -44,3 +44,47 @@ buttons: [
 
   });
 });
+
+
+$(document).ready(function() {
+    // Setup - add a text input to each footer cell
+    $('#dttb1 thead tr').clone(true).appendTo( '#dttb1  thead' );
+    $('#dttb1 thead tr:eq(1) th').each( function (i) {
+        var title = $(this).text();
+        $(this).html( '<input type="text" placeholder="Buscar '+title+'" />' );
+ 
+        $( 'input', this ).on( 'keyup change', function () {
+            if ( table.column(i).search() !== this.value ) {
+                table
+                    .column(i)
+                    .search( this.value )
+                    .draw();
+            }
+        } );
+    } );
+ 
+    var table = $('#dttb1').DataTable( {
+        orderCellsTop: true,
+        fixedHeader: true,
+        autoFill: true,
+        dom: 'Bfrtip',
+        buttons: [
+            {extend:'copyHtml5',
+            className: 'btn btn-outline-dark'},
+            {extend:'excelHtml5',
+            className: 'btn btn-outline-success'},
+            {extend:'csvHtml5',
+            className: 'btn btn-outline-info'},
+            {extend: 'pdfHtml5',
+              className: 'btn btn-outline-danger',
+                orientation: 'landscape',
+                pageSize: 'LEGAL'   },
+           {extend:'colvis',
+        text: 'Agregar/Sacar Columna',
+            className: 'btn btn-outline-light'}
+        ]
+    } );
+
+
+
+} );

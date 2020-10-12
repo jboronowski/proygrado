@@ -1,5 +1,6 @@
 
 
+ console.log("anda");
 
 
 
@@ -52,12 +53,12 @@ var yellowIcon = L.icon ({
   popupAnchor: [1, -34],
   shadowSize: [41, 41]
 }); 
+ console.log("anda");
 
 
-
-var data = $.getJSON( "positivos.json", function( json ) {
-
-  var dengueL= L.geoJSON(null,{
+var data = $.getJSON("http://localhost:3001/v1/geojson", function( json ) {
+  console.log("anda");
+   var dengueL= L.geoJSON(null,{
     pointToLayer: function (feature, latlng) {
       return L.marker(latlng, {icon: redIcon});
     },
@@ -106,21 +107,22 @@ var data = $.getJSON( "positivos.json", function( json ) {
       );
     }
     });
-
     $.each(json, function(feature,latLng) {
       if(latLng['properties']['arbo'] === 'Dengue'){
+       
           dengueL.addData(latLng);
     }
       if(latLng['properties']['arbo'] === 'Zika'){
+        
           zikaL.addData(latLng);
     }
       if(latLng['properties']['arbo'] === 'Chikungunya'){
+      
           chikungunyaL.addData(latLng);
+         
     }
+    
     });
-
-
-
 var customPopup = "Mapa de Arbovirus: <br>"+
 "Para seleccionar un arbovirus utiliza el icono <i class='fa fa-map-marker' aria-hidden='true'></i><br>"+
 "Para buscar por rango de fecha utiliza el icono <i class='fa fa-calendar' aria-hidden='true'></i> y selecciona el rango de fecha  <br>"+
