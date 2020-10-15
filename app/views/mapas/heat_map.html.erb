@@ -34,7 +34,14 @@
                      fullscreenControl: true
                 });
 
-
+          L.easyPrint({
+            title: "Exportar a Imagen jpg",
+ tileLayer: osm,
+          sizeModes: ['Current', 'A4Landscape', 'A4Portrait'],
+          filename: 'myMap',
+          exportOnly: true,
+          hideControlContainer: true
+}).addTo(map);
 
 
 

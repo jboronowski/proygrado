@@ -1,5 +1,7 @@
 {
   "name": "proygrado",
   "private": true,
-  "dependencies": {}
+  "dependencies": {
+    "leaflet-easyprint": "^2.1.9"
+  }
 }

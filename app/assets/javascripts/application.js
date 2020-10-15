@@ -16,5 +16,6 @@
 
 //= require leaflet
 //= require SliderControl
+//= require leaflet-easyPrint
 //= require_tree .
 
