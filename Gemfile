@@ -24,7 +24,8 @@ gem 'jbuilder', '~> 2.5'
 gem 'rack-cors'
 # Gema LEAFLET
 gem 'leaflet-rails'
-
+gem 'groupdate' # optional
+gem 'apexcharts'
 # Gema para geojson rails
 #
 gem "rgeo"

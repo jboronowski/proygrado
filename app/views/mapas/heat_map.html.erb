@@ -1,6 +1,6 @@
 <div class="col-lg-12">
             <div class="main-card mb-6 card">
-                <div class="card-body"><h5 class="card-title">Casos Positivos Confirmados</h5>
+                <div class="card-body"><h5 class="card-title">Mapa de Calor de Casos Confirmados</h5>
 
 
 
@@ -36,11 +36,9 @@
 
           L.easyPrint({
             title: "Exportar a Imagen jpg",
- tileLayer: osm,
           sizeModes: ['Current', 'A4Landscape', 'A4Portrait'],
           filename: 'myMap',
           exportOnly: true,
-          hideControlContainer: true
 }).addTo(map);
 
 

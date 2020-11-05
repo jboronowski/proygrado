@@ -182,6 +182,8 @@ var request = $.getJSON( "http://localhost:3001/v1/geojson", function( json ) {
             }}, function(start, end, label) {
               var datestart =  start.format('YYYY-MM-DD');
               var dateend = end.format('YYYY-MM-DD');
+              console.log(datestart);
+              console.log(dateend);
               var layerrango = {
                 max: 10,
                 data: []
@@ -199,12 +201,12 @@ var request = $.getJSON( "http://localhost:3001/v1/geojson", function( json ) {
                   layerrango["data"].push(temp);
 
                 };
-                if(latLng.properties['arbo']==='Zika' && toggledengue.state()==='remove-zika' && latLng.properties['time'] >=  datestart && latLng.properties['time']<= dateend){
+                if(latLng.properties['arbo']==='Zika' && togglezika.state()==='remove-zika' && latLng.properties['time'] >=  datestart && latLng.properties['time']<= dateend){
                   console.log("zika");
                   layerrango["data"].push(temp);
 
                 };
-                if(latLng.properties['arbo']==='Chikungunya' && toggledengue.state()==='remove-chikugunya' && latLng.properties['time'] >=  datestart && latLng.properties['time']<= dateend){
+                if(latLng.properties['arbo']==='Chikungunya' && togglechikugunya.state()==='remove-chikugunya' && latLng.properties['time'] >=  datestart && latLng.properties['time']<= dateend){
                  console.log("chik");
                  layerrango["data"].push(temp);
                };

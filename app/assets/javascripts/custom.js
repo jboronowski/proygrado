@@ -5,7 +5,6 @@ dom:"<'row'<'col-sm-12 col-md-8'l><'col-sm-12 col-md-1'f>>" +
 "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>"+
 "<'row'<'col-sm-4'><'col-sm-4'B><'col-sm-4'>>"
     
-
 ,
 buttons: [
 
@@ -67,6 +66,7 @@ $(document).ready(function() {
         orderCellsTop: true,
         fixedHeader: true,
         autoFill: true,
+        scrollX: true,
         dom: 'Bfrtip',
         buttons: [
             {extend:'copyHtml5',

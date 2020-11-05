@@ -2,6 +2,7 @@
   "name": "proygrado",
   "private": true,
   "dependencies": {
+    "@turf/clusters-dbscan": "^6.0.1",
     "leaflet-easyprint": "^2.1.9"
   }
 }

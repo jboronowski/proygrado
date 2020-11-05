@@ -1,4 +1,5 @@
-<%=@json[0]['lonlat'][7..25]%>
+<%=@lonlat%>
+
 
 <p id="notice"><%= notice %></p>
 <div class="col-lg-12">
@@ -104,7 +105,7 @@
 </div>
 
 <script>
-var map = L.map('map').setView([ <%=@json[0]['lonlat'][26..45]%>,<%=@json[0]['lonlat'][7..25]%>], 13);
+var map = L.map('map').setView([ <%=@json[0]['y']%>,<%=@json[0]['x']%>], 13);
 
 
 var icon;
@@ -140,9 +141,9 @@ function determineColor(arbo) {
     }); 
   }
 }
-var temp = determineColor("<%=@arbo%>");
+var temp = determineColor(   "<%= @json[0]["arbo_nombre"] %>");
 
-var marker = L.marker([ <%=@json[0]['lonlat'][26..45]%>,<%=@json[0]['lonlat'][7..25]%>], {icon: icon}).addTo(map).bindPopup("Arbo: <%= @json[0]['arbo_nombre']%> Edad: <%= @json[0]['edad']%> Sexo: <%= @json[0]['sexo']%> <br> Fecha: <%= @json[0]['fecha_notificacion']%> Estado: <%= @json[0]['estado']%>  <br> Barrio: <%= @json[0]['barrio_nombre']%> Distrito: <%= @json[0]['distrito_nombre']%>"
+var marker = L.marker([ <%=@json[0]['y']%>,<%=@json[0]['x']%>], {icon: icon}).addTo(map).bindPopup("Arbo: <%= @json[0]['arbo_nombre']%> Edad: <%= @json[0]['edad']%> Sexo: <%= @json[0]['sexo']%> <br> Fecha: <%= @json[0]['fecha_notificacion']%> Estado: <%= @json[0]['estado']%>  <br> Barrio: <%= @json[0]['barrio_nombre']%> Distrito: <%= @json[0]['distrito_nombre']%>"
 
 
 

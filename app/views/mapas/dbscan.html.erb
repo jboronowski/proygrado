@@ -1,0 +1,154 @@
+<div class="col-lg-12">
+            <div class="main-card mb-6 card">
+                <div class="card-body"><h5 class="card-title">Casos Positivos Confirmados</h5>
+
+
+
+
+
+                </div>
+
+            </div></div>
+            <br>
+            <div class="col-lg-12">
+             <div class="main-card mb-6 card">
+                <div id="map" style="height: 720px">
+            </div>
+        </div>
+
+ <script type="text/javascript" src="/javascript/fullscreen.js"></script>
+<script src='https://unpkg.com/@turf/turf/turf.min.js'></script>
+    <script>
+  var osm  = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {id: 'osm',attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'});
+
+                var map = L.map('map',{
+                    center: [-27.33, -55.87],
+                    zoom:  14,
+                    layers: [osm],
+                     fullscreenControl: true
+                });
+
+var data = $.getJSON("http://localhost:3001/v1/geojson", function( json ) {
+    var temp1 = [];
+    $.each(json, function(feature,latLng) {
+        if(latLng.properties.arbo === 'Dengue'){
+        temp1.push(latLng);
+     console.log(temp1);
+}
+    });
+var temp = turf.featureCollection(json);	
+var maxDistance =0.215;
+var clustered = turf.clustersDbscan(temp, maxDistance , {minPoints:3});
+
+var noise = {
+    radius: 8,
+    fillColor: "#424949 ",
+    color: "#424949 ",
+    weight: 1,
+    opacity: 1,
+    fillOpacity: 0.5
+};
+
+Colors = {};
+Colors.names = {
+    aqua: "#00ffff",
+    azure: "#f0ffff",
+    beige: "#f5f5dc",
+    black: "#000000",
+    blue: "#0000ff",
+    brown: "#a52a2a",
+    cyan: "#00ffff",
+    darkblue: "#00008b",
+    darkcyan: "#008b8b",
+    darkgrey: "#a9a9a9",
+    darkgreen: "#006400",
+    darkkhaki: "#bdb76b",
+    darkmagenta: "#8b008b",
+    darkolivegreen: "#556b2f",
+    darkorange: "#ff8c00",
+    darkorchid: "#9932cc",
+    darkred: "#8b0000",
+    darksalmon: "#e9967a",
+    darkviolet: "#9400d3",
+    fuchsia: "#ff00ff",
+    gold: "#ffd700",
+    green: "#008000",
+    indigokey: "value",  "#4b0082",
+    khaki: "#f0e68c",
+    lightblue: "#add8e6",
+    lightcyan: "#e0ffff",
+    lightgreen: "#90ee90",
+    lightgrey: "#d3d3d3",
+    lightpink: "#ffb6c1",
+    lightyellow: "#ffffe0",
+    lime: "#00ff00",
+    magenta: "#ff00ff",
+    maroon: "#800000",
+    navy: "#000080",
+    olive: "#808000",
+    orange: "#ffa500",
+    pink: "#ffc0cb",
+    purple: "#800080",
+    violet: "#800080",
+    red: "#ff0000",
+    silver: "#c0c0c0",
+    yellow: "#ffff00"
+};
+Colors.random = function() {
+        var result;
+        var count = 0;
+        for (var prop in this.names)
+            if (Math.random() < 1/++count)
+               result = prop;
+        return { rgb: this.names[result]};
+    };
+
+
+var noiseL= L.geoJSON(null,{
+    pointToLayer: function (feature, latlng) {
+     return L.circleMarker(latlng, noise);
+    }
+  }
+  );
+
+noiseL.addTo(map);
+
+var color = [];
+$.each(clustered['features'], function(feature,latLng) {
+	if(latLng.properties.dbscan === 'noise'){ 
+       noiseL.addData(latLng); 
+	   
+    }   
+    if(latLng.properties.cluster != null){
+        if (color[latLng.properties.cluster] == null){
+                var colorrandom = Colors.random();
+                color[latLng.properties.cluster]= colorrandom.rgb;
+                var tempcircle = {
+                radius: 8,
+                fillColor: colorrandom.rgb,
+                color: colorrandom.rgb,
+                weight: 1,
+                opacity: 1,
+                fillOpacity: 0.6
+                };
+                L.circleMarker([latLng.geometry.coordinates[1],latLng.geometry.coordinates[0]], tempcircle).addTo(map);
+             }  else {
+
+              var tempcircle = {
+                radius: 8,
+                fillColor: color[latLng.properties.cluster],
+                color: color[latLng.properties.cluster],
+                weight: 1,
+                opacity: 1,
+                fillOpacity: 0.6
+                };
+                L.circleMarker([latLng.geometry.coordinates[1],latLng.geometry.coordinates[0]], tempcircle).addTo(map);      
+
+}
+    }
+
+  });
+console.log(color)
+});
+
+</script>

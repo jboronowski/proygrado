@@ -21,5 +21,10 @@ as: 'mapa_positivos'
   to: 'mapas#heat_map',
   as: 'heat_map'
 
+  get '/clusters/dbscan',
+  to: 'clusters#dbscan',
+  as: 'dbscan'
+
+
   root "welcome#welcome"
 end

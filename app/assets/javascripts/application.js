@@ -13,9 +13,9 @@
 
 //= require activestorage
 //= require custom
-
 //= require leaflet
 //= require SliderControl
+//= require apexcharts
 //= require leaflet-easyPrint
 //= require_tree .
 

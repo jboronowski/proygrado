@@ -1,0 +1,227 @@
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+
+<div class="col-lg-12">
+            <div class="main-card mb-6 card">
+                <div class="card-body"><h5 class="card-title">Cluster/Agrupacion con DBSCAN</h5>
+ 
+                                                 <select class="mb-2 form-control" name="arbo" id="arbo">
+                                                    <option>Dengue</option>
+                                                    <option>Zika</option>
+                                                    <option>Chikungunya</option>
+                                                </select>
+                                               
+                                                
+                                                <input placeholder="Cantidad de Vecinos Minimo" id="cantidad" name ="cantidad" type="text" class="mb-2 form-control">
+                                                 <input placeholder="Distancia Minima" id="distancia" name="distancia" type="text" class="mb-2 form-control">
+                                                
+                                               <input id="daterangepicker" class="mb-2 form-control">
+                                            <button class="mt-1 btn btn-primary" id="btn" style="float: right;">Submit</button>
+                                        
+ </div>
+  
+            <div class="col-lg-12">
+              
+             <div class="main-card mb-6 card">
+                <div id="map" style="height: 720px; ">
+            </div>
+        </div>
+   </div>
+    </div>
+</div>
+<script>
+$('#daterangepicker').daterangepicker({ locale: {
+              format: 'DD-MM-YYYY'
+            }});
+</script>
+<script>
+    var startdate;
+    var enddate;
+
+$('#daterangepicker').on('apply.daterangepicker', function(ev, picker) {
+  startdate = picker.startDate.format('YYYY-MM-DD');
+  enddate = picker.endDate.format('YYYY-DD-MM');
+
+});
+
+$(document).ready(function(){
+  $("#btn").click(function(){
+   map.eachLayer(function (layer) { 
+              if(layer.options.id != 'osm'){
+                map.removeLayer(layer);
+            }});
+var cantidad = $('#cantidad').val();
+var distancia = $('#distancia').val();
+var arbo = $('#arbo').val();
+
+var data = $.getJSON("http://localhost:3001/v1/geojson", function( json ) {
+    var temp1 = [];
+    $.each(json, function(feature,latLng) {
+        if(latLng.properties.arbo === arbo && latLng.properties.time <= enddate && latLng.properties.time >= startdate){  
+          console.log(startdate);
+          console.log(latLng.properties.time);
+          console.log(enddate);
+        temp1.push(latLng);
+     
+}
+    });
+var temp = turf.featureCollection(temp1);    
+var maxDistance =(parseInt(distancia, 10)/1000);
+
+var clustered = turf.clustersDbscan(temp, maxDistance , {minPoints: (parseInt(cantidad, 10))});
+
+var noise = {
+    radius: 8,
+    fillColor: "#585858",
+    color: "#585858",
+    weight: 1,
+    opacity: 1,
+    fillOpacity: 0.5
+};
+/*
+Colors = {};
+Colors.names = {
+    aqua: "#00ffff",
+    azure: "#f0ffff",
+    black: "#000000",
+    blue: "#0000ff",
+    brown: "#a52a2a",
+    cyan: "#00ffff",
+    darkblue: "#00008b",
+    darkcyan: "#008b8b",
+    darkgreen: "#006400",
+    darkkhaki: "#bdb76b",
+    darkmagenta: "#8b008b",
+    darkolivegreen: "#556b2f",
+    darkorange: "#ff8c00",
+    darkorchid: "#9932cc",
+    darkred: "#8b0000",
+    darksalmon: "#e9967a",
+    darkviolet: "#9400d3",
+    fuchsia: "#ff00ff",
+    gold: "#ffd700",
+    green: "#008000",
+    indigo: "#4b0082",
+    khaki: "#f0e68c",
+    lightblue: "#add8e6",
+    lightcyan: "#e0ffff",
+    lightgreen: "#90ee90",
+    lightpink: "#ffb6c1",
+    lightyellow: "#ffffe0",
+    lime: "#00ff00",
+    magenta: "#ff00ff",
+    maroon: "#800000",
+    navy: "#000080",
+    olive: "#808000",
+    orange: "#ffa500",
+    pink: "#ffc0cb",
+    purple: "#800080",
+    violet: "#800080",
+    red: "#ff0000",
+    silver: "#c0c0c0",
+    yellow: "#ffff00"
+};
+*/
+
+var colorarray = [
+ "#00ff00",
+  "#ff00ff",
+ "#800000","#000080",
+"#808000",
+ "#ffa500","#ffc0cb",
+ "#800080",
+ "#800080","#ff0000",
+ "#c0c0c0",
+ "#ffff00",
+  "#ff00ff","#ffd700", "#008000","#4b0082", "#f0e68c","#00ffff", "#f0ffff", "#000000", "#0000ff",
+"#a52a2a", "#00ffff",
+   "#00008b",
+   "#008b8b",
+    "#006400",
+    "#bdb76b",
+    "#8b008b",
+    "#556b2f",
+    "#ff8c00",
+    "#9932cc",
+  "#8b0000",
+     "#e9967a",
+    "#9400d3",
+    "#add8e6",
+    "#e0ffff",
+    "#90ee90",
+    "#ffb6c1",
+    "#ffffe0"
+];
+/*
+Colors.random = function() {
+        var result;
+        var count = 0;
+        for (var prop in this.names)
+            if (Math.random() < 1/++count)
+               result = prop;
+        return { rgb: this.names[result]};
+    };
+*/
+
+var noiseL= L.geoJSON(null,{
+    pointToLayer: function (feature, latlng) {
+     return L.circleMarker(latlng, noise);
+    }
+  }
+  );
+
+noiseL.addTo(map);
+
+var color = [];
+$.each(clustered['features'], function(feature,latLng) {
+  
+    if(latLng.properties.dbscan === 'noise'){ 
+       noiseL.addData(latLng); 
+       
+    }   
+    if(latLng.properties.cluster != null){
+        if(latLng.properties.cluster < colorarray.length){
+
+              var tempcircle = {
+                radius: 8,
+                fillColor: colorarray[latLng.properties.cluster],
+                color: "#000000",
+                weight: 1,
+                opacity: 1,
+                fillOpacity: 0.6
+                };
+                L.circleMarker([latLng.geometry.coordinates[1],latLng.geometry.coordinates[0]], tempcircle).addTo(map);      
+
+} else {
+    var tempcircle = {
+                radius: 8,
+                fillColor: colorarray[(colorarray.length * Math.random())],
+                color: "#000000",
+                weight: 1,
+                opacity: 1,
+                fillOpacity: 0.6
+                };
+                L.circleMarker([latLng.geometry.coordinates[1],latLng.geometry.coordinates[0]], tempcircle).addTo(map);      
+     }
+   } 
+
+  });
+});
+  });
+});
+       </script>
+ <script type="text/javascript" src="/javascript/fullscreen.js"></script>
+<script src='https://unpkg.com/@turf/turf/turf.min.js'></script>
+    <script>
+  var osm  = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {id: 'osm',attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'});
+
+                var map = L.map('map',{
+                    center: [-27.33, -55.87],
+                    zoom:  14,
+                    layers: [osm],
+                     fullscreenControl: true
+                });
+
+
+</script>

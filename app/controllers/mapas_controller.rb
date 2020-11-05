@@ -6,4 +6,7 @@ class MapasController < ApplicationController
 	def heat_map
 		 @positivos_json= Positivo.all.map(&:lonlat).as_json
 	end
+	def dbscan
+
+	end
 end
