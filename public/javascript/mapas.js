@@ -54,7 +54,7 @@ var yellowIcon = L.icon ({
  console.log("anda");
 
 
-var data = $.getJSON("http://localhost:3001/v1/geojson", function( json ) {
+var data = $.getJSON("http://192.168.0.10:3001/v1/geojson", function( json ) {
   console.log("anda");
    var dengueL= L.geoJSON(null,{
     pointToLayer: function (feature, latlng) {
@@ -265,7 +265,7 @@ var helpPopup = L.popup().setContent(customPopup);
           onAdd: function(map) {
             $(input).daterangepicker({
 
-            opens: 'left',
+            opens: 'right',
             parentEl: '#datepicker',
             locale: {
             format: 'DD-MM-YYYY'

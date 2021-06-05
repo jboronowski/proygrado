@@ -1,0 +1,143 @@
+
+       
+        <script type="text/javascript" src="/javascript/fullscreen.js"></script>
+
+        <div class="col-lg-12">
+            <div class="main-card mb-6 card">
+                <div class="card-body"><h5 class="card-title">Mapa de Casos Confirmados</h5>
+
+
+
+
+
+                </div>
+
+            </div></div>
+            <br>
+            <div class="col-lg-12">
+             <div class="main-card mb-6 card">
+                <div id="map" style="height: 720px">
+            </div>
+        </div>
+
+<script>
+    
+  var osm  = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {id: 'osm',attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'});
+
+                var map = L.map('map',{
+                    center: [-27.33, -55.87],
+                    zoom:  12,
+                    layers: [osm],
+                    timeDimension: true,
+                     fullscreenControl: true
+                });
+                var geoJSON;
+   function getColor(d) {
+    return d > 50 ? '#800026' :
+           d > 25  ? '#BD0026' :
+           d > 20  ? '#E31A1C' :
+           d > 15  ? '#FC4E2A' :
+           d > 10   ? '#FD8D3C' :
+           d > 5   ? '#FEB24C' :
+           d > 2   ? '#FED976' :
+                      '#FFEDA0';
+}
+function style(feature) {
+    return {
+        fillColor: getColor(feature.properties.cantidad),
+        weight: 2,
+        opacity: 1,
+        color: 'white',
+        dashArray: '3',
+        fillOpacity: 0.7
+    };
+}
+
+function highlightFeature(e) {
+    var layer = e.target;
+
+    layer.setStyle({
+        weight: 5,
+        color: '#666',
+        dashArray: '',
+        fillOpacity: 0.7
+    });
+
+    if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
+        layer.bringToFront();
+    }
+     info.update(layer.feature.properties);
+}
+function resetHighlight(e) {
+    geoJSON.resetStyle(e.target);
+     info.update();
+}
+
+function zoomToFeature(e) {
+    map.fitBounds(e.target.getBounds());
+}
+function onEachFeature(feature, layer) {
+    layer.on({
+        mouseover: highlightFeature,
+        mouseout: resetHighlight,
+        click: zoomToFeature
+    });
+}
+
+var info = L.control();
+
+info.onAdd = function (map) {
+    this._div = L.DomUtil.create('div', 'info'); // create a div with a class "info"
+    this.update();
+    return this._div;
+};
+
+// method that we will use to update the control based on feature properties passed
+info.update = function (props) {
+
+       this._div.innerHTML = '<h4>Positivos Confirmados</h4>' +  (props ?
+        '<b>' + props.barrio+ '</b><br />'+props.cantidad+ ' Positivos Confirmados'+ '</b><br />'+Math.floor((Math.random() * 10000) + 1)+   ' Poblacion'+ '</b><br />'+(Math.random(1)).toFixed(2)+' Indice'+'</b><br />'
+        : 'Seleccionar Barrio');
+};
+    
+info.addTo(map);
+
+var legend = L.control({position: 'bottomright'});
+
+legend.onAdd = function (map) {
+
+    var div = L.DomUtil.create('div', 'info legend'),
+        grades = [0, 2, 5, 10, 15, 20, 25,50],
+        labels = [];
+
+    // loop through our density intervals and generate a label with a colored square for each interval
+    for (var i = 0; i < grades.length; i++) {
+        div.innerHTML +=
+            '<i style="background:' + getColor(grades[i] + 1) + '"></i> ' +
+            grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+');
+    }
+
+    return div;
+};
+
+legend.addTo(map);
+
+geoJSON = L.geoJSON(null,{
+    style: style,
+    onEachFeature: onEachFeature
+});
+
+var data = $.getJSON("http://localhost:3001/v1/barrio",{arbo_id:2}, function( json ) {
+     
+
+     $.each(json, function(feature,latLng) {
+
+          geoJSON.addData(latLng['geojson'], {style: style});
+    });
+  
+
+geoJSON.addTo(map);
+   
+
+});
+</script>

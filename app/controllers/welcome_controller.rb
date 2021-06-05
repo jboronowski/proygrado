@@ -45,8 +45,10 @@ class WelcomeController < ApplicationController
         @año_chikungunya_array_valor.push(v)
      end
 
-
-
+     def login
+    end
+    def ayuda
+    end
       #@json["semana_dengue"].each do |product|
 # product.each do |key, value|
  #  @value1=key

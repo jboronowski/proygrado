@@ -13,6 +13,14 @@ Rails.application.routes.draw do
 to: 'mapas#mapas',
 as: 'mapa_positivos'
 
+get '/mapas/positivos_barrio',
+  to: 'mapas#mapa',
+  as: 'mapa'
+
+get '/mapas/positivos_distrito',
+  to: 'mapas#mapa_distrito',
+  as: 'mapa_distrito'
+
   get '/positivos_avanzado',
   to: 'positivos#avanzado',
   as: 'positivos_avanzado'
@@ -24,6 +32,13 @@ as: 'mapa_positivos'
   get '/clusters/dbscan',
   to: 'clusters#dbscan',
   as: 'dbscan'
+
+  get '/welcome/login',
+  to: 'welcome#login',
+  as: 'login'
+get '/welcome/ayuda',
+  to: 'welcome#ayuda',
+  as: 'ayuda'
 
 
   root "welcome#welcome"

@@ -1,4 +1,19 @@
-  
+   </br>
+    </br>
+     <div class="app-page-title">
+                            <div class="page-title-wrapper">
+                                <div class="page-title-heading">
+                                    <div class="page-title-icon">
+                                        <i class="pe-7s-server icon-gradient bg-night-sky">
+                                        </i>
+                                    </div>
+                                    <div>ArboApp Dashboard
+                                        <div class="page-title-subheading">Datos de positivos confirmados de Dengue, Zika y Chikungunya.
+                                        </div>
+                                    </div>
+                                </div>
+                                 </div>
+                        </div>
              <div class="row">
                             <div class="col-md-6 col-xl-4">
                                 <div class="card mb-3 widget-content bg-love-kiss">
@@ -85,7 +100,7 @@
                         </div>
                         <div class="tab-content">
                             <div class="tab-pane active" id="tab-minimal-1">
-                                <div class="card-body" style="position: relative;">
+                                <div class="card-body" style="position: relative">
                                      <div id="chart">   </div>
        </div>
    </div>   </div>   </div>     </div>  
@@ -142,7 +157,7 @@
                                                         <div class="widget-content-wrapper">
                                                              <div class="widget-content-left">
                                                                 <div class="widget-heading">Total de Notificaciones de Dengue</div>
-                                                              <div class="widget-subheading">A la fecha: DD/MM/YYYY</div>
+                                                              <div class="widget-subheading">A la fecha: <%= @hoy%></div>
                                                             </div>
                                                             <div class="widget-content-right">
                                                                 <div class="widget-numbers text-danger"><%= @total_dengue%></div>
@@ -178,7 +193,7 @@
                                                         <div class="widget-content-wrapper">
                                                            <div class="widget-content-left">
                                                                <div class="widget-heading">Total de Notificaciones de Chikungunya</div>
-                                                              <div class="widget-subheading">A la fecha: DD/MM/YYYY</div>
+                                                              <div class="widget-subheading">A la fecha: <%= @hoy%></div>
                                                             </div>
                                                             <div class="widget-content-right">
                                                                 <div class="widget-numbers text-warning"><%= @total_chikungunya%></div>
@@ -232,10 +247,14 @@
                         ​
 
  <script type="text/javascript">
+    var test = window.localStorage.getItem('access_token');
+    console.log(test);
         var options = {
+            colors : ['#FF0400','#00E396','#FEB019'],
           series: [{
           name: 'Dengue',
           data: <%= raw @año_dengue_array_valor %>
+          
         }, {
           name: 'Zika',
           data: <%= raw @año_zika_array_valor %>
@@ -245,7 +264,8 @@
         }],
           chart: {
           type: 'bar',
-          height: 350
+          height: 350,
+          width: '85%'
         },
         plotOptions: {
           bar: {
@@ -286,17 +306,17 @@
 
         var chart = new ApexCharts(document.querySelector("#chart1"), options);
         chart.render();
-            </script>>
-  
+            </script> 
     <script type="text/javascript">
          var options = {
           series: [{
-          name: "STOCK ABC",
+          name: "Notificaciones Totales en Semana",
           data: <%= raw @semana6_dengue_array_valor %>
         }],
           chart: {
           type: 'area',
           height: 350,
+          width: '85%',
           zoom: {
             enabled: false
           }
@@ -329,5 +349,5 @@
 
         var chart = new ApexCharts(document.querySelector("#chart"), options);
         chart.render();
-    </script>>
+    </script>
   

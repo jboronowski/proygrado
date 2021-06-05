@@ -175,7 +175,7 @@ var request = $.getJSON( "http://localhost:3001/v1/geojson", function( json ) {
         onAdd: function(map) {
           $(input).daterangepicker({
 
-            opens: 'left',
+            opens: 'right',
             parentEl: '#datepicker',
             locale: {
               format: 'DD-MM-YYYY'

@@ -1,12 +1,13 @@
-
-  <div class="col-xl-9 col-lg-6 col-md-6">
+<!-- <div class="col-md-9"> -->
+  <div class="container">
                                 <div class="main-card mb-3 card">
                                     <div class="card-header"><h5 class="card-title">Casos Positivos -   Avanzado</h5>
                                     </div>
                                     <div class="card-body">
-<table class="mb-3 table table table-hover table-striped table-bordered" id="dttb1">
+<table class="mb-3 table table table-hover table-striped table-bordered dataTables_wrapper" id="dttb1">
   <thead>
    <tr>
+      <th>Notificacion Nº</th>
       <th>Arbo</th>
       <th>Serotipo</th>
         <th>Estado</th>
@@ -30,8 +31,16 @@
     <% @json.each do |positivo| %>
 
       <tr>
-
-           <td><%= positivo["arbo_nombre"] %></td>
+        <td><%= positivo["id"] %></td>
+           <td> <% if positivo["arbo_nombre"] === 'Dengue' %>
+          <div class="badge badge-danger">Dengue</div>
+          <% end %>
+          <% if positivo["arbo_nombre"] === 'Chikungunya' %>
+          <div class="badge badge-warning">Chikungunya</div>
+          <% end %>
+          <% if positivo["arbo_nombre"] === 'Zika' %>
+          <div class="badge badge-success">Zika</div>
+          <% end %></td>
            <td><%= positivo["serotipo_nombre"] %></td>
           <td><% if positivo["estado"] == true %>
           <div class="badge badge-pill badge-success"> Activo </div>

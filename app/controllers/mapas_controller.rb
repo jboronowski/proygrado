@@ -1,12 +1,21 @@
 class MapasController < ApplicationController
 	def mapas
-	@positivos = Positivo.all
-    @positivos_json= Positivo.all.map(&:lonlat).as_json
 	end
 	def heat_map
-		 @positivos_json= Positivo.all.map(&:lonlat).as_json
 	end
 	def dbscan
 
 	end
+	def mapa
+
+	  url = 'http://localhost:3001/v1/barrio'
+      response = Faraday.get(url, {a:0}, {'Accept' => 'application/json'})
+      @json = JSON.parse(response.body)
+	end
+	def mapa_distrito
+	url = 'http://localhost:3001/v1/distrito'
+      response = Faraday.get(url, {a:0}, {'Accept' => 'application/json'})
+      @json = JSON.parse(response.body)
+	end
+
 end

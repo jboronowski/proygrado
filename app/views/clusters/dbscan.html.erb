@@ -17,7 +17,7 @@
                                                  <input placeholder="Distancia Minima" id="distancia" name="distancia" type="text" class="mb-2 form-control">
                                                 
                                                <input id="daterangepicker" class="mb-2 form-control">
-                                            <button class="mt-1 btn btn-primary" id="btn" style="float: right;">Submit</button>
+                                            <button class="mt-1 btn btn-primary" id="btn" style="float: right;">Generar Mapa de Clusters</button>
                                         
  </div>
   
@@ -41,8 +41,7 @@ $('#daterangepicker').daterangepicker({ locale: {
 
 $('#daterangepicker').on('apply.daterangepicker', function(ev, picker) {
   startdate = picker.startDate.format('YYYY-MM-DD');
-  enddate = picker.endDate.format('YYYY-DD-MM');
-
+  enddate = picker.endDate.format('YYYY-MM-DD');
 });
 
 $(document).ready(function(){
@@ -54,14 +53,12 @@ $(document).ready(function(){
 var cantidad = $('#cantidad').val();
 var distancia = $('#distancia').val();
 var arbo = $('#arbo').val();
-
 var data = $.getJSON("http://localhost:3001/v1/geojson", function( json ) {
     var temp1 = [];
+    console.log(startdate);
+          console.log(enddate);
     $.each(json, function(feature,latLng) {
         if(latLng.properties.arbo === arbo && latLng.properties.time <= enddate && latLng.properties.time >= startdate){  
-          console.log(startdate);
-          console.log(latLng.properties.time);
-          console.log(enddate);
         temp1.push(latLng);
      
 }

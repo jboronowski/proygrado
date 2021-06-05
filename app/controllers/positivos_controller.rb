@@ -2,6 +2,7 @@
     def index
       @positivos = Positivo.all
       url = 'http://localhost:3001/v1/activos'
+     
       # a es parametros
       response = Faraday.get(url, {a:0}, {'Accept' => 'application/json'})
       @json = JSON.parse(response.body)
